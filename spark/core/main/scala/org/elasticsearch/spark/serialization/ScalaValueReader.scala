@@ -75,7 +75,16 @@ class ScalaValueReader extends ValueReader with SettingsAware {
   protected def parseInt(value: String, parser:Parser) = { if (parser.currentToken()== VALUE_NUMBER) parser.intValue().toInt else value.toInt }
 
   def longValue(value: String, parser:Parser) = { checkNull(parseLong, value, parser) }
-  protected def parseLong(value: String, parser:Parser) = { if (parser.currentToken()== VALUE_NUMBER) parser.longValue().toLong else value.toLong }
+  protected def parseLong(value: String, parser:Parser) = {
+    try {
+      if (parser.currentToken()== VALUE_NUMBER)
+        parser.longValue().toLong 
+      else 
+        value.toLong 
+    } catch { //to find the excepetion location
+      case e: NumberFormatException => 1111111111111111111L
+    }
+  }
 
   def floatValue(value: String, parser:Parser) = { checkNull(parseFloat, value, parser) }
   protected def parseFloat(value: String, parser:Parser) = { if (parser.currentToken()== VALUE_NUMBER) parser.floatValue().toFloat else value.toFloat }
