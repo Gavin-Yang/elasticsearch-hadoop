@@ -21,11 +21,13 @@ private[sql] trait RowValueReader extends SettingsAware {
   }
 
   def rowOrder(currentField: String): Seq[String] = {
+    println("!===@@@===!  currentField="+currentField)
     rowMap.get(currentField).get
   }
 
   def addToBuffer(esRow: ScalaEsRow, key: AnyRef, value: Any) {
     val pos = esRow.rowOrder.indexOf(key.toString())
+    println("!===@@@===!  key="+key+",  value="+value)
     esRow.values.update(pos, value)
   }
 }
