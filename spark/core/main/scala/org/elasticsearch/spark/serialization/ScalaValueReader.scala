@@ -87,7 +87,17 @@ class ScalaValueReader extends ValueReader with SettingsAware {
   protected def parseDouble(value: String, parser:Parser) = { if (parser.currentToken()== VALUE_NUMBER) parser.doubleValue().toDouble else value.toDouble }
 
   def booleanValue(value: String, parser:Parser) = { checkNull(parseBoolean, value, parser) }
-  protected def parseBoolean(value: String, parser:Parser) = { if (parser.currentToken()== VALUE_BOOLEAN)  parser.booleanValue() else value.toBoolean }
+  protected def parseBoolean(value: String, parser:Parser) = 
+  { 
+    if (parser.currentToken()== VALUE_BOOLEAN)  parser.booleanValue() 
+    else {
+      try{
+        value.toBoolean
+      }catch{
+        case ex: java.lang.IllegalArgumentException => if (value == "0" || value == "1") value=="1" else throw ex
+      }
+    }
+  }
 
   def binaryValue(value: Array[Byte]) = {
     if (value != null) {
