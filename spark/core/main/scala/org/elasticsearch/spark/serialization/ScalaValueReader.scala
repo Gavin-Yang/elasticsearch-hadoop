@@ -20,7 +20,7 @@ import javax.xml.bind.DatatypeConverter
 
 class ScalaValueReader extends ValueReader with SettingsAware {
 
-  var emptyAsNull: Boolean = false
+  var emptyAsNull: Boolean = true
   var richDate: Boolean = false
 
   def readValue(parser: Parser, value: String, esType: FieldType) = {
